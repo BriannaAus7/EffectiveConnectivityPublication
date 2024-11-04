@@ -1,0 +1,68 @@
+# This analysis was run using Python
+
+import os
+import numpy as np
+import pandas as pd
+
+directory_path = '/Users/briannaaustin/Desktop/lsngc/EC_Brianna(3)/MIDData/HC_MID'
+
+def process_csv(file_path):
+    df = pd.read_csv(file_path)
+    print(f"Loaded {file_path}")
+
+    # Transposing the dataframe
+    df_transposed = df.T
+
+    # Save the transposed DataFrame to a new CSV file, appending 'T' to the filename just to make identifying clearer
+    new_file_path = file_path.replace('.csv', 'T.csv')
+    df_transposed.to_csv(new_file_path)
+    print(f"Saved transposed CSV to {new_file_path}")
+
+    return df_transposed
+
+subjects_data = {}  # Dictionary to store each subject's data
+
+
+for filename in os.listdir(directory_path):
+    if filename.endswith('.csv') and not filename.endswith('T.csv'): 
+        full_file_path = os.path.join(directory_path, filename)
+        process_csv(full_file_path)
+
+# Now loop only processing transposed csvs
+for filename in os.listdir(directory_path):
+    if filename.endswith('T.csv'):  # Checking for transposed csvs
+        full_file_path = os.path.join(directory_path, filename)
+        df_transposed = pd.read_csv(full_file_path, index_col=0)
+        print(f"Loaded transposed data from {full_file_path}")
+        
+        # Transposed DataFrame--> NumPy array, brain regions extraction for later when plotting and labelling indicies
+        data_array = df_transposed.to_numpy()
+        brain_regions = df_transposed.index.tolist()
+
+        
+        inp_series = data_array
+
+        # Store the data array, brain regions, and inp_series by subject
+        subjects_data[filename] = {
+            'data_array': data_array,
+            'brain_regions': brain_regions,
+            'inp_series': inp_series
+        }
+
+
+for subject, data in subjects_data.items():
+    print(f"Processing data for {subject}")
+    print(f"inp_series shape: {data['inp_series'].shape}")
+
+# Functions:
+def normalize_0_mean_1_std(inp_series):
+    inp_series=inp_series.copy()
+    mean_ts=np.array([inp_series.mean(axis=1)]).transpose()
+    mean_ts_mtrx = mean_ts*np.ones((1,inp_series.shape[1]));
+    unb_data_mtrx = inp_series - mean_ts_mtrx
+    p = np.power(unb_data_mtrx,2)
+    s=np.array([p.sum(axis=1)]).transpose()
+    sc=np.sqrt(s/p.shape[1])
+    sc2=sc*(np.ones((1,p.shape[1])))
+    nrm= np.divide(unb_data_mtrx,sc2)
+    return nrm
