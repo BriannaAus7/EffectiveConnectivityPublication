@@ -189,3 +189,75 @@ from sklearn.manifold import trustworthiness
 # Calculate trustworthiness
 trust = trustworthiness(X_scaled, X_reduced, n_neighbors=umap_n_neighbors)
 print(f"Trustworthiness Score: {trust:.4f}")
+
+from mpl_toolkits.mplot3d import Axes3D  # For 3D plotting
+
+# 3D Visualization of UMAP embedding with clusters and noise points
+fig = plt.figure(figsize=(12, 8))
+ax = fig.add_subplot(111, projection='3d')
+
+# Plot clustered points
+scatter_clusters = ax.scatter(
+    X_reduced[clusters != -1, 0],  # UMAP dimension 1
+    X_reduced[clusters != -1, 1],  # UMAP dimension 2
+    X_reduced[clusters != -1, 2] if X_reduced.shape[1] > 2 else np.zeros(X_reduced[clusters != -1].shape[0]),  # UMAP dimension 3 (or zeros if only 2D)
+    c=clusters[clusters != -1],  # Color based on cluster ID
+    cmap='viridis',
+    label='Clusters',
+    alpha=0.7,
+    s=30
+)
+
+# Plot noise points
+scatter_noise = ax.scatter(
+    X_reduced[clusters == -1, 0],  # UMAP dimension 1
+    X_reduced[clusters == -1, 1],  # UMAP dimension 2
+    X_reduced[clusters == -1, 2] if X_reduced.shape[1] > 2 else np.zeros(X_reduced[clusters == -1].shape[0]),  # UMAP dimension 3 (or zeros)
+    c='red',
+    label='Noise',
+    alpha=0.5,
+    s=30
+)
+
+# Add labels and title
+ax.set_title("3D UMAP Embedding with Clusters and Noise Points", fontsize=16)
+ax.set_xlabel("UMAP Dimension 1", fontsize=12)
+ax.set_ylabel("UMAP Dimension 2", fontsize=12)
+ax.set_zlabel("UMAP Dimension 3", fontsize=12)
+plt.legend(loc="best", fontsize=10)
+plt.show()
+
+# Visualization by HC and Patient labels
+fig = plt.figure(figsize=(12, 8))
+ax = fig.add_subplot(111, projection='3d')
+
+# HC points
+scatter_hc = ax.scatter(
+    X_reduced[y == 0, 0],  # UMAP dimension 1 for HC
+    X_reduced[y == 0, 1],  # UMAP dimension 2 for HC
+    X_reduced[y == 0, 2] if X_reduced.shape[1] > 2 else np.zeros(X_reduced[y == 0].shape[0]),  # UMAP dimension 3 (or zeros)
+    c='blue',
+    label='HC',
+    alpha=0.7,
+    s=30
+)
+
+# Patient points
+scatter_patients = ax.scatter(
+    X_reduced[y == 1, 0],  # UMAP dimension 1 for Patients
+    X_reduced[y == 1, 1],  # UMAP dimension 2 for Patients
+    X_reduced[y == 1, 2] if X_reduced.shape[1] > 2 else np.zeros(X_reduced[y == 1].shape[0]),  # UMAP dimension 3 (or zeros)
+    c='orange',
+    label='Patients',
+    alpha=0.7,
+    s=30
+)
+
+# Add labels and title
+ax.set_title("3D UMAP Embedding with HC and Patient Labels", fontsize=16)
+ax.set_xlabel("UMAP Dimension 1", fontsize=12)
+ax.set_ylabel("UMAP Dimension 2", fontsize=12)
+ax.set_zlabel("UMAP Dimension 3", fontsize=12)
+plt.legend(loc="best", fontsize=10)
+plt.show()
+
