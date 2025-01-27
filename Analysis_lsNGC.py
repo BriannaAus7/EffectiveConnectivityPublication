@@ -1,6 +1,8 @@
-# This script is for the effective connectivity analysis, and used Python 3.12.3. 
+# This script is the first for the analysis, and is for the effective connectivity analysis.
+# Python 3.12.3.
 # This code includes parts of the large scale nonlinear granger causality function described in Wismuller et al (2021).
 # Headings have been provided within the code for clear instruction and details of what each code section is doing.
+# The outputs are an affinity matrix and an f-statistic for each subject, across the timeseries.
 
 
 # 1. Importing libraries and preparing the input data (CSV files) to be compatabile for LsNGC analysis.
