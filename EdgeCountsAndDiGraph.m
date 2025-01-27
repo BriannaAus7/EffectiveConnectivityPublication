@@ -1,3 +1,9 @@
+% This script is for the dominant network of influence analysis. 
+% The dominant network of influence as a measure of hierarchal control was based on the highest connectivity counts from the edge patterns. 
+% The highest connectivity count indicates a networks large influence across other networks. 
+% To determine the dominant network, the frequency of each network’s appearance was counted across all edge patterns, excluding self-connections (e.g., controlcontrol). 
+% Connections were split into HC>MD and MD>HC based on z-statistic direction.
+
 % Load BigResTbl and filter significant connections
 BigResTbl = array2table(BigRes);
 BigResTbl.Properties.VariableNames = {'r1', 'r2', 'p', 'FDRp', 'zstat', 'EffectSize'};
@@ -253,7 +259,7 @@ function [WorkingTable, PropRedNetList, RedNetNames, RegionCounts, EdgePatterns]
         end
     end
 
-    % Compute degree per 10 networks
+    % Compute degree per 10 networks.
     RedNetList = [VisCount, SoMatCount, DorsAttnCount, SalVentCount, LimbCount, ContCount, DMNCount, TmpParCount, SubCorCount, VMNCount]';
     RedNetNames = {"Vis", "SoMat", "DorsAttn", "SalVent", "Limb", "Cntrl", "DMN", "TempPar", "SubCor", "VMN"}';
 
