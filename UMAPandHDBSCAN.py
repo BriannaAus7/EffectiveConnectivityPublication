@@ -13,6 +13,8 @@ from sklearn.metrics import silhouette_score, davies_bouldin_score
 import umap
 import hdbscan
 import matplotlib.pyplot as plt
+from scipy.stats import kruskal
+from scipy.stats import mannwhitneyu
 
 def read_and_flatten(file_path):
     df = pd.read_csv(file_path, header=None)
@@ -322,3 +324,119 @@ def run_permutation_tests(X, labels, top_features, num_permutations=1000):
         obs_stat, p_val = permutation_test(X, labels, feature, num_permutations)
         results.append({'Feature': feature, 'Observed Statistic': obs_stat, 'P-Value': p_val})
     return pd.DataFrame(results)
+
+#Plotting functions
+
+def plot_feature_distribution(X, labels, feature_idx, group_labels):
+    control_values = X[labels == 0, feature_idx]
+    patient_values = X[labels == 1, feature_idx]
+    plt.boxplot([control_values, patient_values], labels=group_labels)
+    plt.title(f"Feature {feature_idx} Distribution")
+    plt.ylabel("Value")
+    plt.show()
+
+def map_features_to_region_pairs(feature_indices, region_names):
+    num_regions = len(region_names)
+    mapped_features = []
+
+    for feature_idx in feature_indices:
+        region1 = feature_idx // num_regions
+        region2 = feature_idx % num_regions
+        region_pair = (region_names[region1], region_names[region2])
+        mapped_features.append(region_pair)
+
+    return mapped_features
+
+
+    # Step 4: Feature Importance
+    print("Calculating feature importance...")
+    feature_importance_df = calculate_feature_importance(X_scaled, clusters)
+    print("\nTop 10 Important Features:")
+    print(feature_importance_df.head(10))
+
+    # Step 5: Permutation Tests
+    top_features = feature_importance_df['Feature'].values[:10]
+    print("\nRunning permutation tests for top features...")
+    permutation_results_df = run_permutation_tests(X_scaled, y, top_features)
+    print("\nPermutation Test Results:")
+    print(permutation_results_df)
+
+    # Step 6: Visualize Significant Features
+    significant_features = permutation_results_df[permutation_results_df['P-Value'] < 0.05]['Feature'].values
+    for feature in significant_features:
+        plot_feature_distribution(X_scaled, y, feature, ["Control", "Patient"])
+
+    # Step 7: Map Features to Regions
+    region_names_df = pd.read_excel("ComboNames.xlsx", header=None)
+    region_names = region_names_df[0].tolist()
+    mapped_features = map_features_to_region_pairs(significant_features, region_names)
+
+    print("\nMapped Features:")
+    for feature, region_pair in zip(significant_features, mapped_features):
+        print(f"Feature {feature}: {region_pair}")
+
+
+kruskal_significance_level = 0.05
+
+significant_kruskal_features = feature_importance_df[
+    feature_importance_df['P-Value'] < kruskal_significance_level
+]['Feature'].values
+
+print(f"\nSignificant Features from Kruskal-Wallis Test (p < {kruskal_significance_level}):")
+print(significant_kruskal_features)
+
+# PermTests on sig kw features
+
+print("\nRunning permutation tests for significant Kruskal-Wallis features...")
+permutation_results_kruskal_df = run_permutation_tests(X_scaled, y, significant_kruskal_features)
+
+print("\nPermutation Test Results for Kruskal-Wallis Features:")
+print(permutation_results_kruskal_df)
+
+
+# Now this is to show you the significant features after permtesting.
+
+significant_permutation_features = permutation_results_kruskal_df[
+    permutation_results_kruskal_df['P-Value'] < 0.05
+]['Feature'].values
+
+print(f"\nSignificant Features from Permutation Tests (p < 0.05): {significant_permutation_features}")
+
+for feature in significant_permutation_features:
+    plot_feature_distribution(X_scaled, y, feature, ["Control", "Patient"])
+
+#Now, which regions are the mapped features to?
+mapped_features_kruskal = map_features_to_region_pairs(significant_permutation_features, region_names)
+
+print("\nMapped Features from Kruskal-Wallis + Permutation Tests:")
+for feature, region_pair in zip(significant_permutation_features, mapped_features_kruskal):
+    print(f"Feature {feature}: {region_pair}")
+
+
+
+
+def cluster_feature_importance(X, clusters, cluster_id):
+    cluster_mask = clusters == cluster_id  # samples in the target cluster siuch as cluster 0 or 1
+    other_mask = clusters != cluster_id   # Samples not in the target cluster  0 or 1 
+    
+    results = []
+    for feature_idx in range(X.shape[1]):
+        # Numbers for the feature in the target cluster vs. others
+        cluster_values = X[cluster_mask, feature_idx]
+        other_values = X[other_mask, feature_idx]
+        
+        #MannUWHIT test, this specific line of code
+        stat, p_value = mannwhitneyu(cluster_values, other_values, alternative='two-sided')
+        
+        # Then the mean difference, as a more positive is more associated with HC and a mor enegative is associated with pateint
+        mean_diff = cluster_values.mean() - other_values.mean()
+        
+        results.append({
+            'Feature': feature_idx,
+            'P-Value': p_value,
+            'Mean Difference': mean_diff
+        })
+    
+    # Now make the results into a dataframe for easier access going forward.
+    importance_df = pd.DataFrame(results)
+    return importance_df.sort_values(by='P-Value', ascending=True)
