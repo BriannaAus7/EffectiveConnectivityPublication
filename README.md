@@ -13,6 +13,7 @@ In order to run the statistical experiments and algorithm as done in the paper, 
 
 
 **Large scale non-linear granger causality (LsNGC)**
+
 Large scale non-linear granger causality (LsNGC) was used for the effective connectivity analysis.
 LsNGC was developed by Wismüller et al (2021), with a full repository of the original analysis and code for lsNGC here: https://github.com/Large-scale-causality-inference/Large-scale-nonlinear-causality
 
