@@ -1,3 +1,6 @@
+# This code has 2 main purposes. 
+# 1. To reduce the high dimensionality of the input dataset, as in out case, it was 94, 45,796. 
+# 2. Perform a cluster analysis on the reduced dimensional data, and assess whether the EC patterns are able form clusters that are characteristic of healthy controls and patients.
 pwd
 
 file_path ='/Users/briannaaustin/Desktop/lsngc(2)/EC_Brianna(2)'
@@ -10,7 +13,6 @@ from sklearn.metrics import silhouette_score, davies_bouldin_score
 import umap
 import hdbscan
 import matplotlib.pyplot as plt
-
 
 def read_and_flatten(file_path):
     df = pd.read_csv(file_path, header=None)
@@ -181,3 +183,9 @@ plt.ylabel("UMAP Dimension 2", fontsize=12)
 plt.legend(loc="best", fontsize=10)
 plt.grid(True, alpha=0.3)
 plt.show()
+
+from sklearn.manifold import trustworthiness
+
+# Calculate trustworthiness
+trust = trustworthiness(X_scaled, X_reduced, n_neighbors=umap_n_neighbors)
+print(f"Trustworthiness Score: {trust:.4f}")
