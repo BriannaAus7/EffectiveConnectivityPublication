@@ -440,3 +440,84 @@ def cluster_feature_importance(X, clusters, cluster_id):
     # Now make the results into a dataframe for easier access going forward.
     importance_df = pd.DataFrame(results)
     return importance_df.sort_values(by='P-Value', ascending=True)
+
+
+cluster_0_importance_df = cluster_feature_importance(X_scaled, clusters, cluster_id=0)
+cluster_1_importance_df = cluster_feature_importance(X_scaled, clusters, cluster_id=1)
+
+print("Top Features for Cluster 0:")
+print(cluster_0_importance_df.head(10))
+
+print("Top Features for Cluster 1:")
+print(cluster_1_importance_df.head(10))
+
+# What does it mean to be a "top feature" within a cluster?
+# Has a statistically significant difference in its distribution within the cluster compared to outside the cluster.
+# Likely plays a critical role in defining the characteristics or behavior of that cluster relative to the rest of the dataset.
+
+
+mapped_features_cluster_0 = map_features_to_region_pairs(
+    cluster_0_importance_df['Feature'].values[:10],
+    region_names
+)
+print("\nMapped Features for Cluster 0:")
+for feature, region_pair in zip(cluster_0_importance_df['Feature'].values[:10], mapped_features_cluster_0):
+    print(f"Feature {feature}: {region_pair}")
+
+mapped_features_cluster_1 = map_features_to_region_pairs(
+    cluster_1_importance_df['Feature'].values[:10],
+    region_names
+)
+print("\nMapped Features for Cluster 1:")
+for feature, region_pair in zip(cluster_1_importance_df['Feature'].values[:10], mapped_features_cluster_1):
+    print(f"Feature {feature}: {region_pair}")
+
+
+# Create a mask for noise points
+noise_mask = clusters == -1
+
+# Subset the data for noise points
+X_noise = X_scaled[noise_mask]
+y_noise = y[noise_mask]
+
+print(f"Number of noise points: {X_noise.shape[0]}")
+
+
+from scipy.stats import mannwhitneyu
+
+def noise_feature_importance(X, clusters, noise_label=-1):
+    """
+    Identify features most important for separating noise points from other points.
+
+    Parameters:
+    - X: Scaled feature matrix.
+    - clusters: Cluster labels for each sample.
+    - noise_label: Label representing noise points (default: -1).
+
+    Returns:
+    - A DataFrame with features ranked by p-value and mean difference.
+    """
+    noise_mask = clusters == noise_label
+    non_noise_mask = clusters != noise_label
+
+    results = []
+    for feature_idx in range(X.shape[1]):
+        # Feature values for noise and non-noise points
+        noise_values = X[noise_mask, feature_idx]
+        non_noise_values = X[non_noise_mask, feature_idx]
+
+        # Perform Mann-Whitney U test
+        stat, p_value = mannwhitneyu(noise_values, non_noise_values, alternative='two-sided')
+
+        # Calculate mean difference
+        mean_diff = noise_values.mean() - non_noise_values.mean()
+
+        results.append({
+            'Feature': feature_idx,
+            'P-Value': p_value,
+            'Mean Difference': mean_diff
+        })
+
+    # Convert to DataFrame and sort by p-value
+    importance_df = pd.DataFrame(results)
+    return importance_df.sort_values(by='P-Value', ascending=True)
