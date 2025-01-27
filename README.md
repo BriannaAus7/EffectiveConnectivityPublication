@@ -22,6 +22,7 @@ After, a clustering model was created to investigate whether effective connectiv
 
 
 This pipeline utilizes data from 22 healthy controls and 25 methadone dependent patients from the Neural Correlates of Opioid Dependence (NCORE) study [1].
+Neural Correlates of Reward and Emotion in opioid dependence
 Each subject performed the Monetary Incentive Delay and Cue Reactivity task duroing functional magnetic resonance imaging acuqistion.
 Timeseries of task activity were extracted from each region of the AAL2 atlas from each subject, and there are functions in this repository to format the extracted timeseries for use in effective connectivity analysis.
 
