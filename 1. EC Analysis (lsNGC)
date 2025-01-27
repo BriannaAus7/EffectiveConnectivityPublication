@@ -1,7 +1,9 @@
-# This analysis was run using juypter lab with Python.
+# This script is for the effective connectivity analysis, and used Python 3.12.3. 
+# This code includes parts of the large scale nonlinear granger causality function described in Wismuller et al (2021).
+# Headings have been provided within the code for clear instruction and details of what each code section is doing.
 
 
-#The first section of code is preparing the input data (CSV files) to be compatabile for LsNGC analysis.
+# 1. Importing libraries and preparing the input data (CSV files) to be compatabile for LsNGC analysis.
 import os
 import numpy as np
 import pandas as pd
@@ -12,47 +14,51 @@ def process_csv(file_path):
     df = pd.read_csv(file_path)
     print(f"Loaded {file_path}")
 
-    # Transposing the dataframe
+    # Transposing the dataframes.
     df_transposed = df.T
 
-    # Save the transposed DataFrame to a new CSV file, appending 'T' to the filename just to make identifying clearer
+    # 2. Save the transposed DataFrame to a new CSV file, appending 'T' to the filename just to make identifying clearer, as you will have multiple CSVs in the directory.
     new_file_path = file_path.replace('.csv', 'T.csv')
     df_transposed.to_csv(new_file_path)
     print(f"Saved transposed CSV to {new_file_path}")
 
     return df_transposed
 
-subjects_data = {}  # Dictionary to store each subject's data
+# 3. Create a dictionary to store each subject's data
+subjects_data = {}
 for filename in os.listdir(directory_path):
     if filename.endswith('.csv') and not filename.endswith('T.csv'): 
         full_file_path = os.path.join(directory_path, filename)
         process_csv(full_file_path)
 
-# Now loop only processing transposed csvs
+# 4. Now only loop through the transposed csvs
 for filename in os.listdir(directory_path):
     if filename.endswith('T.csv'):  # Checking for transposed csvs
         full_file_path = os.path.join(directory_path, filename)
         df_transposed = pd.read_csv(full_file_path, index_col=0)
         print(f"Loaded transposed data from {full_file_path}")
         
-        # Transposed DataFrame--> NumPy array, brain regions extraction for later when plotting and labelling indicies
+# 5. Convert the transposed dataframe to NumPy array, and then save the brain regions extraction for later when plotting and labelling indicies
         data_array = df_transposed.to_numpy()
         brain_regions = df_transposed.index.tolist()
 
         
         inp_series = data_array
 
-        # Store the data array, brain regions, and inp_series by subject
+# 6. Store the data array, brain regions, and inp_series by subject
         subjects_data[filename] = {
             'data_array': data_array,
             'brain_regions': brain_regions,
             'inp_series': inp_series
         }
 
-
 for subject, data in subjects_data.items():
     print(f"Processing data for {subject}")
     print(f"inp_series shape: {data['inp_series'].shape}")
+
+
+# 7. This section of code is the lsNGC function, which can be found in full here: 
+# https://github.com/Large-scale-causality-inference/Large-scale-nonlinear-causality?tab=readme-ov-file
 
 def lsNGC(inp_series, ar_order=1, k_f=3, k_g=2, normalize=0):
     if normalize:
@@ -174,6 +180,7 @@ def lsNGC(inp_series, ar_order=1, k_f=3, k_g=2, normalize=0):
     
     return Aff, f_stat
 
+# 8. Create a results dictionary to store each subject's Affinity matrix and F-statistic.
 results = {}
 
 for subject, data in subjects_data.items():
@@ -184,27 +191,29 @@ for subject, data in subjects_data.items():
         }
 
 
-# For the results dictionary and subjects_data with brain_regions
+# 9. This is for the results dictionary and subjects_data with brain_regions
 base_directory = '/Users/briannaaustin/Desktop/lsngc/EC_Brianna(3)/MIDData/HC_MID'
 if not os.path.exists(base_directory):
-    os.makedirs(base_directory)  # Ensure directory exists
+    os.makedirs(base_directory)  # Double check that the directory exists.
 
 for subject, result in results.items():
-    # Retrieve the brain regions for the subject
+
+# 10. Retrieve the brain regions for each subject (The brain regions were saved earlier in the script before DataFrame -->NumPy array conversion).
     brain_regions = subjects_data[subject]['brain_regions']
 
-    # Convert the matrices to DataFrames, setting brain regions as index and columns
+# 11. Convert the affinity matrices to DataFrames, setting brain regions as index and columns
     aff_df = pd.DataFrame(result['Aff'], index=brain_regions, columns=brain_regions)
     f_stat_df = pd.DataFrame(result['f_stat'], index=brain_regions, columns=brain_regions)
 
-    # Generate file paths using the base directory
+# 12. Create file paths for both the affinity matricies and f-statistic using the base directory.
     aff_file_path = f'{base_directory}/{subject}_Aff.csv'
     f_stat_file_path = f'{base_directory}/{subject}_F_stat.csv'
 
-    # Save to CSV
+# 13. Save the affinity matricies and f-statistic as CSV files.
     aff_df.to_csv(aff_file_path)
     f_stat_df.to_csv(f_stat_file_path)
 
+# 14. A print statement as a Sanity check to ensure the CSV files have been saved in the correct place.
     print(f"Saved Aff matrix to {aff_file_path}")
     print(f"Saved F-stat matrix to {f_stat_file_path}")
 
