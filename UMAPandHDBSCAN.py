@@ -261,3 +261,64 @@ ax.set_zlabel("UMAP Dimension 3", fontsize=12)
 plt.legend(loc="best", fontsize=10)
 plt.show()
 
+# 1. Feature Importance
+#2 ways to assess feature Importance.
+
+#1. Within Each Cluster (Grouping Clusters)
+#Which features most influence the grouping of points in each cluster. Specifcially chose the Kruskal-Wallis as non-parametric data.
+
+#2. Distinguishing Clusters (Seperating Clusters)
+
+def calculate_feature_importance(X, clusters):
+    """
+    Calculate feature importance using Kruskal-Wallis test for non-parametric data.
+    Skips features with identical values within clusters.
+    """
+    feature_importance = []
+    unique_clusters = np.unique(clusters)
+
+    for feature_idx in range(X.shape[1]):
+        feature_values = X[:, feature_idx]
+
+        # Group feature values by cluster
+        cluster_values = [feature_values[clusters == cluster] for cluster in unique_clusters if cluster != -1]
+
+        # Check if all values are identical across all clusters
+        if all(len(values) > 1 and np.any(np.diff(values)) for values in cluster_values):
+            # Perform Kruskal-Wallis test
+            stat, p_value = kruskal(*cluster_values)
+            feature_importance.append((feature_idx, stat, p_value))
+
+    # Convert to DataFrame
+    importance_df = pd.DataFrame(feature_importance, columns=['Feature', 'K-Statistic', 'P-Value'])
+    return importance_df.sort_values(by='K-Statistic', ascending=False)
+
+
+pip install tqdm
+from tqdm import tqdm
+
+
+# Permutation Testing functions
+
+def permutation_test(X, labels, feature_index, num_permutations=1000):
+    group_0 = X[labels == 0, feature_index]
+    group_1 = X[labels == 1, feature_index]
+    observed_stat = np.mean(group_1) - np.mean(group_0)
+
+    null_dist = []
+    for _ in range(num_permutations):
+        permuted_labels = np.random.permutation(labels)
+        perm_group_0 = X[permuted_labels == 0, feature_index]
+        perm_group_1 = X[permuted_labels == 1, feature_index]
+        null_stat = np.mean(perm_group_1) - np.mean(perm_group_0)
+        null_dist.append(null_stat)
+
+    p_value = np.mean(np.abs(null_dist) >= np.abs(observed_stat))
+    return observed_stat, p_value
+
+def run_permutation_tests(X, labels, top_features, num_permutations=1000):
+    results = []
+    for feature in tqdm(top_features, desc="Running Permutation Tests"):
+        obs_stat, p_val = permutation_test(X, labels, feature, num_permutations)
+        results.append({'Feature': feature, 'Observed Statistic': obs_stat, 'P-Value': p_val})
+    return pd.DataFrame(results)
