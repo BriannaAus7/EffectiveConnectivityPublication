@@ -33,14 +33,14 @@ Timeseries of task activity were extracted from each region of the Schaefer 2018
 4. Save the outputted affinity matricies and f-statistics to your chosen directory.
 5. Run the ECPermutation.m script.
 6. Run the EdgeCountsAndDigraph script.
-   i. Evaluate the dominant network of influence.
-   ii. Visualise the edge counts across each network for both conditions, HC>MD and MD>HC.
-7. Run the DimensionalityReduction&Clustering script.
-   i. Reduce the dimensionality of the dataset using Uniform Manifold Approximation and Projection for Dimension Reduction (UMAP).
-   ii. Perform Hierarchical Density-Based Spatial Clustering of Applications with Noise (HDBSCAN).
-   iii. Evaluate the cluster profiling, and seperation.
-   iv. Evaluate the features important for distinguishing and seperating clusters.
-   v. Evaluate the noise point cluster, and investigate whether the noise points are boundaried or transitional in relation to the main clusters.
+   * Evaluate the dominant network of influence.
+   * Visualise the edge counts across each network for both conditions, HC>MD and MD>HC.
+8. Run the DimensionalityReduction&Clustering script.
+   * Reduce the dimensionality of the dataset using Uniform Manifold Approximation and Projection for Dimension Reduction (UMAP).
+   * Perform Hierarchical Density-Based Spatial Clustering of Applications with Noise (HDBSCAN).
+   * Evaluate the cluster profiling, and seperation.
+   * Evaluate the features important for distinguishing and seperating clusters.
+   * Evaluate the noise point cluster, and investigate whether the noise points are boundaried or transitional in relation to the main clusters.
 
 This infographic summarises the analysis pipeline, and the flow of work used.
 
