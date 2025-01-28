@@ -50,8 +50,7 @@ Timeseries of task activity were extracted from each brain region from the Schae
    * Evaluate the features important for distinguishing and seperating clusters.
    * Evaluate the noise point cluster, and investigate whether the noise points are boundaried or transitional in relation to the main clusters.
 
-This infographic summarises the analysis pipeline used:
-
-<img width="391" alt="Screenshot 2024-11-12 at 19 23 43" src="https://github.com/user-attachments/assets/e346d82d-efec-47c6-812a-29382cbfdc09" />
+This infographic further summarises the analysis pipeline used:
+<img width="588" alt="Screenshot 2025-01-28 at 14 08 59" src="https://github.com/user-attachments/assets/d1b25ec7-d7a9-4fd3-a712-0bbb4a982960" />
 
 If you have any questions about the code, analyses, or results, please don't hesitate to email Brianna Austin (ba223@ic.ac.uk).
