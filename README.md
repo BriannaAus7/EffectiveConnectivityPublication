@@ -1,10 +1,10 @@
 ### Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity analysis.
  ---
 
-This repository contains the code for the analyses described in the paper "Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity".
+This repository contains the code for the analyses described in the paper "Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity.
 Please cite this work should you use any part of this code.
- ---
 
+ ---
  ### Dependencies
 
 In order to run the statistical experiments and algorithm as done in the paper, your environment will need to contains at minimum the following main packages:
