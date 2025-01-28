@@ -3,6 +3,7 @@
 
 This repository contains the code for the analyses described in the paper "Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity".
 Please cite this work should you use any part of this code.
+ ---
 
  ### Dependencies
 
@@ -14,6 +15,7 @@ In order to run the statistical experiments and algorithm as done in the paper, 
 - python 3.12.3
 - MATLAB_R2023b
 
+ ---
 
 ### Large scale non-linear granger causality (LsNGC)
 
@@ -25,6 +27,7 @@ After, a clustering model was created to investigate whether effective connectiv
 This pipeline utilizes data from 22 healthy controls and 25 methadone-dependent patients from the Neural Correlates of Reward and Emotion in opioid dependence (NCORE) study [1]. Each subject performed a series of neurocognitive tasks, and these analyses focus on the Monetary Incentive Delay and Cue Reactivity task during functional magnetic resonance imaging acquistion. 
 Timeseries of task activity were extracted from each region of the Schaefer 2018 atlas from each subject. Following timeseries extraction, each subject has a CSV file. For these analyses, the MID task had 214 brain regions, and 292 timepoints. In the CR task, there were 214 brain regions and 322 timepoints. Many thanks to Dr Danielle Kurtin for completing the parcellation and timeseries extraction.
 
+ ---
 
 ### Pipeline Steps
 
