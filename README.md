@@ -1,30 +1,30 @@
-**Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity analysis.**
+### Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity analysis.**
 
-This repository contains the code for the statistical tests and algorithm described in the paper "Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity". The paper is linked here: [Link"] 
+This repository contains the code for the analyses described in the paper "Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity".
 Please cite this work should you use any part of this code.
 
  **Dependencies**
 
-In order to run the statistical experiments and algorithm as done in the paper, your environment will need to contains the following main packages:
+In order to run the statistical experiments and algorithm as done in the paper, your environment will need to contains at minimum the following main packages:
 
 - pandas 2.0.1
 - numpy 1.24.4
 - scipy 1.8.0
+- python 3.12.3
+- MATLAB_R2023b
 
 
 **Large scale non-linear granger causality (LsNGC)**
 
 Large scale non-linear granger causality (LsNGC) was used for the effective connectivity analysis.
 LsNGC was developed by Wismüller et al (2021), with a full repository of the original analysis and code for lsNGC here: https://github.com/Large-scale-causality-inference/Large-scale-nonlinear-causality.
-Additionally, public access to Wismüller et al (2021) can be found here: https://www.nature.com/articles/s41598-021-87316-6
-
+Additionally, public access to the full paper of Wismüller et al (2021) can be found here: https://www.nature.com/articles/s41598-021-87316-6
 After, a clustering model was created to investigate whether effective connectivity patterns are able to characterise healthy controls and people with opioid use disorder.
 
 
-This pipeline utilizes data from 22 healthy controls and 25 methadone dependent patients from the Neural Correlates of Opioid Dependence (NCORE) study [1].
-Neural Correlates of Reward and Emotion in opioid dependence
-Each subject performed the Monetary Incentive Delay and Cue Reactivity task duroing functional magnetic resonance imaging acuqistion.
-Timeseries of task activity were extracted from each region of the AAL2 atlas from each subject, and there are functions in this repository to format the extracted timeseries for use in effective connectivity analysis.
+This pipeline utilizes data from 22 healthy controls and 25 methadone-dependent patients from the Neural Correlates of Reward and Emotion in opioid dependence (NCORE) study [1]. Each subject performed a series of neurocognitive tasks, and these analyses focus on the Monetary Incentive Delay and Cue Reactivity task during functional magnetic resonance imaging acquistion. 
+Timeseries of task activity were extracted from each region of the Schaefer 2018 atlas from each subject. Following timeseries extraction, each subject has a CSV file. For these analyses, the MID task had 214 brain regions, and 292 timepoints. In the CR task, there were 214 brain regions and 322 timepoints.
+
 
 1. Make sure your timeseries are in a CSV format. For these analyses, each subject had a 214-by-214 CSV.
 2. Ensure all the CSVs used for the EC are in the correct directory
