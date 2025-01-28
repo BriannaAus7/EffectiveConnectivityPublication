@@ -25,7 +25,7 @@ This pipeline utilizes data from 22 healthy controls and 25 methadone-dependent 
 Timeseries of task activity were extracted from each region of the Schaefer 2018 atlas from each subject. Following timeseries extraction, each subject has a CSV file. For these analyses, the MID task had 214 brain regions, and 292 timepoints. In the CR task, there were 214 brain regions and 322 timepoints. Many thanks to Dr Danielle Kurtin for completing the parcellation and timeseries extraction.
 
 
-
+### Pipeline Steps
 
 1. Make sure your timeseries are in a CSV format. For these analyses, each subject had a 214-by-214 CSV.
 2. Ensure all the CSVs used for effective connectivity analysis are in the correct directory.
