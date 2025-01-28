@@ -1,4 +1,4 @@
-### Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity analysis.**
+### Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity analysis.
 
 This repository contains the code for the analyses described in the paper "Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity".
 Please cite this work should you use any part of this code.
@@ -18,7 +18,7 @@ In order to run the statistical experiments and algorithm as done in the paper, 
 
 Large scale non-linear granger causality (LsNGC) was used for the effective connectivity analysis.
 LsNGC was developed by Wismüller et al (2021), with a full repository of the original analysis and code for lsNGC here: https://github.com/Large-scale-causality-inference/Large-scale-nonlinear-causality.
-Additionally, public access to the full paper of Wismüller et al (2021) can be found here: https://www.nature.com/articles/s41598-021-87316-6
+Additionally, public access to the full paper of Wismüller et al (2021)[https://www.nature.com/articles/s41598-021-87316-6] can be found when clicking on the hyperlink.
 After, a clustering model was created to investigate whether effective connectivity patterns are able to characterise healthy controls and people with opioid use disorder.
 
 
