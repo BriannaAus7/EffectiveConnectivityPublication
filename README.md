@@ -1,6 +1,6 @@
 ### Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity analysis.
  ---
-
+ 
 This repository contains the code for the analyses described in the paper "Investigating hierarchal control amongst functional networks disrupted by opioid use disorder using effective connectivity.
 Please cite this work should you use any part of this code.
 
@@ -25,30 +25,30 @@ LsNGC was developed by Wismüller et al (2021), with a full repository of the or
 Additionally, public access to the full paper of [Wismüller et al (2021)](https://www.nature.com/articles/s41598-021-87316-6) can be found when clicking on the hyperlink.
 After, a clustering model was created to investigate whether effective connectivity patterns are able to characterise healthy controls and people with opioid use disorder.
 
-This pipeline utilizes data from 22 healthy controls and 25 methadone-dependent patients from the Neural Correlates of Reward and Emotion in opioid dependence (NCORE) study [1]. Each subject performed a series of neurocognitive tasks, and these analyses focus on the Monetary Incentive Delay (MID) and Cue Reactivity (CR) task during functional magnetic resonance imaging acquistion. 
+This pipeline utilizes data from 22 healthy controls (HC) and 25 methadone-dependent (MD) patients from the [Neural Correlates of Reward and Emotion in opioid dependence (NCORE) study](https://www.imperial.ac.uk/brain-sciences/research/psychiatry/ncore/). Each subject performed a series of neurocognitive tasks, and these analyses focus on the Monetary Incentive Delay (MID) and Cue Reactivity (CR) task during functional magnetic resonance imaging acquistion. 
 
-Timeseries of task activity were extracted from each brain region from the Schaefer 2018 atlas for each subject. Following timeseries extraction, each subject had a CSV file. For these analyses, the MID task had 214 brain regions, and 292 timepoints. In the CR task, there were 214 brain regions and 322 timepoints. Many thanks to Dr Danielle Kurtin for completing the parcellation and timeseries extraction. CSV files were in the format (214,322) and (214,292).
+Timeseries of task activity were extracted from each brain region from the Schaefer 2018 atlas for each subject. Following timeseries extraction, each subject had a CSV file. For these analyses, the MID task had 214 brain regions, and 292 timepoints. In the CR task, there were 214 brain regions and 322 timepoints. Many thanks to Dr Danielle Kurtin for completing the parcellation and timeseries extraction.
 
  ---
 
 ### Pipeline Steps
 
-1. Make sure your timeseries are in a CSV format. For these analyses, each subject had a 214-by-214 CSV.
+1. Make sure your timeseries are in a CSV format. For these analyses, each subject had a 214-by-214 CSV. For the MID task, the CSV were 214,292 and for the CR task, 214,322.
 2. Ensure all the CSVs used for effective connectivity analysis are in the correct directory.
-3. Run the Analysis_LsNGC script.
+3. Run the Analysis_LsNGC.py script.
 4. Save the outputted affinity matricies and f-statistics to your chosen directory.
 5. Run the ECPermutation.m script.
-6. Run the EdgeCountsAndDigraph script.
-   * Evaluate the dominant network of influence. 6.1
-   * Visualise the edge counts across each network for both conditions, HC>MD and MD>HC 6.2.
-8. Run the DimensionalityReduction&Clustering script.
+6. Run the EdgeCountsAndDigraph.m script.
+   * Evaluate the dominant network of influence.
+   * Visualise the edge counts across each network for both conditions, HC>MD and MD>HC.
+8. Run the DimensionalityReduction&Clustering.py script.
    * Reduce the dimensionality of the dataset using Uniform Manifold Approximation and Projection for Dimension Reduction (UMAP).
    * Perform Hierarchical Density-Based Spatial Clustering of Applications with Noise (HDBSCAN).
    * Evaluate the cluster profiling, and seperation.
    * Evaluate the features important for distinguishing and seperating clusters.
    * Evaluate the noise point cluster, and investigate whether the noise points are boundaried or transitional in relation to the main clusters.
 
-This infographic summarises the analysis pipeline, and the flow of work used:
+This infographic summarises the analysis pipeline used:
 
 <img width="391" alt="Screenshot 2024-11-12 at 19 23 43" src="https://github.com/user-attachments/assets/e346d82d-efec-47c6-812a-29382cbfdc09" />
 
