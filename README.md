@@ -20,10 +20,12 @@ In order to run the statistical experiments and algorithm as done in the paper, 
 ### Large scale non-linear granger causality (LsNGC)
 
 Large scale non-linear granger causality (LsNGC) was used for the effective connectivity analysis.
-LsNGC was developed by Wismüller et al (2021), with a full repository of the original analysis and code for lsNGC here: https://github.com/Large-scale-causality-inference/Large-scale-nonlinear-causality.
+LsNGC was developed by Wismüller et al (2021), with a full repository of the original analysis and code for lsNGC [here](https://github.com/Large-scale-causality-inference/Large-scale-nonlinear-causality).
 
 Additionally, public access to the full paper of [Wismüller et al (2021)](https://www.nature.com/articles/s41598-021-87316-6) can be found when clicking on the hyperlink.
-After, a clustering model was created to investigate whether effective connectivity patterns are able to characterise healthy controls and people with opioid use disorder.
+
+---
+After, lsNGC, a clustering model was created to investigate whether effective connectivity patterns are able to characterise healthy controls and people with opioid use disorder.
 
 This pipeline utilizes data from 22 healthy controls (HC) and 25 methadone-dependent (MD) patients from the [Neural Correlates of Reward and Emotion in opioid dependence (NCORE) study](https://www.imperial.ac.uk/brain-sciences/research/psychiatry/ncore/). Each subject performed a series of neurocognitive tasks, and these analyses focus on the Monetary Incentive Delay (MID) and Cue Reactivity (CR) task during functional magnetic resonance imaging acquistion. 
 
