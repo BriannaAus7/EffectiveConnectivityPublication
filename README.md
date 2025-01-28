@@ -44,6 +44,7 @@ Timeseries of task activity were extracted from each region of the Schaefer 2018
 
 This infographic summarises the analysis pipeline, and the flow of work used.
 
+<img width="391" alt="Screenshot 2024-11-12 at 19 23 43" src="https://github.com/user-attachments/assets/e346d82d-efec-47c6-812a-29382cbfdc09" />
 
 
 
