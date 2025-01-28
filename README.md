@@ -34,7 +34,7 @@ Timeseries of task activity were extracted from each region of the Schaefer 2018
 5. Run the ECPermutation.m script.
 6. Run the EdgeCountsAndDigraph script.
    * Evaluate the dominant network of influence. 6.1
-   * Visualise the edge counts across each network for both conditions, HC>MD and MD>HC. 6.2
+   * Visualise the edge counts across each network for both conditions, HC>MD and MD>HC 6.2.
 8. Run the DimensionalityReduction&Clustering script.
    * Reduce the dimensionality of the dataset using Uniform Manifold Approximation and Projection for Dimension Reduction (UMAP).
    * Perform Hierarchical Density-Based Spatial Clustering of Applications with Noise (HDBSCAN).
