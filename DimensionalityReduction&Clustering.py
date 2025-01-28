@@ -1,7 +1,7 @@
 # This code has 2 main purposes. 
 # 1. To reduce the high dimensionality of the input dataset, as in out case, it was 94, 45,796. 
 # 2. Perform a cluster analysis on the reduced dimensional data, and assess whether the EC patterns are able form clusters that are characteristic of healthy controls and patients.
-pwd
+# 3. Assess the noise cluster, and investigate whether the noise points are boundaried or transitional compared to the main clusters formed.
 
 file_path ='/Users/briannaaustin/Desktop/lsngc(2)/EC_Brianna(2)'
 
@@ -59,7 +59,7 @@ umap_n_neighbors = 10
 umap_min_dist = 0.1
 umap_n_components = 10
 
-#Applying UMAP
+#UMAP being applied
 print("Applying UMAP...")
 reducer = umap.UMAP(
     n_neighbors=umap_n_neighbors,
@@ -84,8 +84,8 @@ hdbscan_model = hdbscan.HDBSCAN(
 )
 clusters = hdbscan_model.fit_predict(X_reduced)
 
-#Cluster eval metrics.
-# SS, cluster purity
+#Cluster evaluation metrics (Silhouette Score and Cluster Purity).
+# Silhouette Score
 print("Evaluating clustering...")
 non_noise_mask = clusters != -1
 silhouette_avg = silhouette_score(X_reduced[non_noise_mask], clusters[non_noise_mask])
@@ -144,7 +144,7 @@ total_points = len(clusters)
 
 noise_proportion = (num_noise_points / total_points) * 100
 
-# Patient and HC composition in noise
+# MD patient and HC composition in noise
 num_hc_in_noise = np.sum((y == 0) & noise_mask)
 num_patients_in_noise = np.sum((y == 1) & noise_mask)
 
@@ -163,18 +163,18 @@ print(f"Patients in Noise: {num_patients_in_noise} ({patient_proportion_in_noise
 
 plt.figure(figsize=(10, 8))
 plt.scatter(
-    X_reduced[clusters != -1, 0],  # UMAP dimension 1 for clustered points
-    X_reduced[clusters != -1, 1],  # UMAP dimension 2 for clustered points
+    X_reduced[clusters != -1, 0],  # UMAP 1-D for clustered points
+    X_reduced[clusters != -1, 1],  # UMAP 2-D for clustered points
     c=clusters[clusters != -1],  # Use cluster labels for color
-    cmap='viridis',  # Colormap for clusters
+    cmap='viridis',  # Colourmap for clusters
     label='Clusters',
     alpha=0.7,  # Transparency
     s=30  # Marker size
 )
 plt.scatter(
-    X_reduced[clusters == -1, 0],  # UMAP dimension 1 for noise points
-    X_reduced[clusters == -1, 1],  # UMAP dimension 2 for noise points
-    c='red',  # Color for noise points
+    X_reduced[clusters == -1, 0],  # UMAP 1-D for noise points
+    X_reduced[clusters == -1, 1],  # UMAP 2-D for noise points
+    c='red',  # Colour for noise points
     label='Noise',
     alpha=0.5,  # Transparency for noise points
     s=30  # Marker size
@@ -188,11 +188,11 @@ plt.show()
 
 from sklearn.manifold import trustworthiness
 
-# Calculate trustworthiness
+# Calculate trustworthiness. (Scroll further down in the code for explanation of trustworthiness.)
 trust = trustworthiness(X_scaled, X_reduced, n_neighbors=umap_n_neighbors)
 print(f"Trustworthiness Score: {trust:.4f}")
 
-from mpl_toolkits.mplot3d import Axes3D  # For 3D plotting
+from mpl_toolkits.mplot3d import Axes3D  # For 3D plotting as want to visualise the UMAP embedding in 3D
 
 # 3D Visualization of UMAP embedding with clusters and noise points
 fig = plt.figure(figsize=(12, 8))
@@ -221,7 +221,6 @@ scatter_noise = ax.scatter(
     s=30
 )
 
-# Add labels and title
 ax.set_title("3D UMAP Embedding with Clusters and Noise Points", fontsize=16)
 ax.set_xlabel("UMAP Dimension 1", fontsize=12)
 ax.set_ylabel("UMAP Dimension 2", fontsize=12)
@@ -229,33 +228,33 @@ ax.set_zlabel("UMAP Dimension 3", fontsize=12)
 plt.legend(loc="best", fontsize=10)
 plt.show()
 
-# Visualization by HC and Patient labels
+# Visualization with HC and Patient labels now, to see the distribution
 fig = plt.figure(figsize=(12, 8))
 ax = fig.add_subplot(111, projection='3d')
 
 # HC points
 scatter_hc = ax.scatter(
-    X_reduced[y == 0, 0],  # UMAP dimension 1 for HC
-    X_reduced[y == 0, 1],  # UMAP dimension 2 for HC
-    X_reduced[y == 0, 2] if X_reduced.shape[1] > 2 else np.zeros(X_reduced[y == 0].shape[0]),  # UMAP dimension 3 (or zeros)
+    X_reduced[y == 0, 0],  # UMAP 1-D for HC
+    X_reduced[y == 0, 1],  # UMAP 2-D for HC
+    X_reduced[y == 0, 2] if X_reduced.shape[1] > 2 else np.zeros(X_reduced[y == 0].shape[0]),  # UMAP 3-D (or zeros)
     c='blue',
     label='HC',
     alpha=0.7,
     s=30
 )
 
-# Patient points
+# Patient (MD) points
 scatter_patients = ax.scatter(
-    X_reduced[y == 1, 0],  # UMAP dimension 1 for Patients
-    X_reduced[y == 1, 1],  # UMAP dimension 2 for Patients
-    X_reduced[y == 1, 2] if X_reduced.shape[1] > 2 else np.zeros(X_reduced[y == 1].shape[0]),  # UMAP dimension 3 (or zeros)
+    X_reduced[y == 1, 0],  # UMAP 1-D for Patients
+    X_reduced[y == 1, 1],  # UMAP 2-D for Patients
+    X_reduced[y == 1, 2] if X_reduced.shape[1] > 2 else np.zeros(X_reduced[y == 1].shape[0]),  # UMAP 3-D (or zeros)
     c='orange',
     label='Patients',
     alpha=0.7,
     s=30
 )
 
-# Add labels and title
+
 ax.set_title("3D UMAP Embedding with HC and Patient Labels", fontsize=16)
 ax.set_xlabel("UMAP Dimension 1", fontsize=12)
 ax.set_ylabel("UMAP Dimension 2", fontsize=12)
@@ -274,7 +273,7 @@ plt.show()
 def calculate_feature_importance(X, clusters):
     """
     Calculate feature importance using Kruskal-Wallis test for non-parametric data.
-    Skips features with identical values within clusters.
+    Skips features with identical values within clusters as Kruskal cannot be done with identical values.
     """
     feature_importance = []
     unique_clusters = np.unique(clusters)
@@ -348,25 +347,25 @@ def map_features_to_region_pairs(feature_indices, region_names):
     return mapped_features
 
 
-    # Step 4: Feature Importance
+    # Feature Importance
     print("Calculating feature importance...")
     feature_importance_df = calculate_feature_importance(X_scaled, clusters)
     print("\nTop 10 Important Features:")
     print(feature_importance_df.head(10))
 
-    # Step 5: Permutation Tests
+    # Permutation Testing
     top_features = feature_importance_df['Feature'].values[:10]
     print("\nRunning permutation tests for top features...")
     permutation_results_df = run_permutation_tests(X_scaled, y, top_features)
     print("\nPermutation Test Results:")
     print(permutation_results_df)
 
-    # Step 6: Visualize Significant Features
+    # Plot the significant figures
     significant_features = permutation_results_df[permutation_results_df['P-Value'] < 0.05]['Feature'].values
     for feature in significant_features:
         plot_feature_distribution(X_scaled, y, feature, ["Control", "Patient"])
 
-    # Step 7: Map Features to Regions
+    # Map the features to the brain regions, so can see which networks the coming up.
     region_names_df = pd.read_excel("ComboNames.xlsx", header=None)
     region_names = region_names_df[0].tolist()
     mapped_features = map_features_to_region_pairs(significant_features, region_names)
@@ -385,7 +384,7 @@ significant_kruskal_features = feature_importance_df[
 print(f"\nSignificant Features from Kruskal-Wallis Test (p < {kruskal_significance_level}):")
 print(significant_kruskal_features)
 
-# PermTests on sig kw features
+# PermTest on sig kw features
 
 print("\nRunning permutation tests for significant Kruskal-Wallis features...")
 permutation_results_kruskal_df = run_permutation_tests(X_scaled, y, significant_kruskal_features)
@@ -394,7 +393,7 @@ print("\nPermutation Test Results for Kruskal-Wallis Features:")
 print(permutation_results_kruskal_df)
 
 
-# Now this is to show you the significant features after permtesting.
+# Now this is to show you the significant features after PermTesting. (Expecting to see significant drop).
 
 significant_permutation_features = permutation_results_kruskal_df[
     permutation_results_kruskal_df['P-Value'] < 0.05
@@ -405,7 +404,7 @@ print(f"\nSignificant Features from Permutation Tests (p < 0.05): {significant_p
 for feature in significant_permutation_features:
     plot_feature_distribution(X_scaled, y, feature, ["Control", "Patient"])
 
-#Now, which regions are the mapped features to?
+# Mapping features after KS
 mapped_features_kruskal = map_features_to_region_pairs(significant_permutation_features, region_names)
 
 print("\nMapped Features from Kruskal-Wallis + Permutation Tests:")
@@ -425,10 +424,10 @@ def cluster_feature_importance(X, clusters, cluster_id):
         cluster_values = X[cluster_mask, feature_idx]
         other_values = X[other_mask, feature_idx]
         
-        #MannUWHIT test, this specific line of code
+        #MannUWHIT test being performed here specifically.
         stat, p_value = mannwhitneyu(cluster_values, other_values, alternative='two-sided')
         
-        # Then the mean difference, as a more positive is more associated with HC and a mor enegative is associated with pateint
+        # Then the mean difference, as a more positive is more associated with HC and a more negative is associated with pateint
         mean_diff = cluster_values.mean() - other_values.mean()
         
         results.append({
@@ -452,7 +451,7 @@ print("Top Features for Cluster 1:")
 print(cluster_1_importance_df.head(10))
 
 # What does it mean to be a "top feature" within a cluster?
-# Has a statistically significant difference in its distribution within the cluster compared to outside the cluster.
+# Interpretation: Has a statistically significant difference in its distribution within the cluster compared to outside the cluster.
 # Likely plays a critical role in defining the characteristics or behavior of that cluster relative to the rest of the dataset.
 
 
