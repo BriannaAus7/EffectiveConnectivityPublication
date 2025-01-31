@@ -3,6 +3,8 @@
 # 2. Perform a cluster analysis on the reduced dimensional data, and assess whether the EC patterns are able form clusters that are characteristic of healthy controls and patients.
 # 3. Assess the noise cluster, and investigate whether the noise points are boundaried or transitional compared to the main clusters formed.
 
+# Note to self, go into code and reorganise the noise point analysis
+# Also add numbers for the instructions and headings
 file_path ='/Users/briannaaustin/Desktop/lsngc(2)/EC_Brianna(2)'
 
 import os
