@@ -1,3 +1,5 @@
+%Make notes about what the script is doing, number and comment like the lsNGC script
+
 % Load BigResTbl and filter significant connections
 BigResTbl = array2table(BigRes);
 BigResTbl.Properties.VariableNames = {'r1', 'r2', 'p', 'FDRp', 'tstat', 'EffectSize'};
