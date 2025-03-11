@@ -1,7 +1,7 @@
 # This script is the first for the analysis, and is for the effective connectivity analysis.
 # Python 3.12.3.
-# This code includes parts of the large scale nonlinear granger causality function described in Wismuller et al (2021).
-# Headings have been provided within the code for clear instruction and details of what each code section is doing.
+# This code includes parts of the large scale nonlinear granger causality function described in Wismuller et al (2021), which the full link to the repository can be found here.
+# Headings have been provided within the code for clear instruction and details of what each code section does.
 # The outputs are an affinity matrix and an f-statistic for each subject, across the timeseries, and this will be saved in your chosen directory.
 
 
@@ -200,7 +200,7 @@ if not os.path.exists(base_directory):
 
 for subject, result in results.items():
 
-# 10. Retrieve the brain regions for each subject (The brain regions were saved earlier in the script before DataFrame -->NumPy array conversion).
+# 10. Retrieve the brain regions for each subject (The brain regions were saved earlier in the script before DataFrame --> NumPy array conversion).
     brain_regions = subjects_data[subject]['brain_regions']
 
 # 11. Convert the affinity matrices to DataFrames, setting brain regions as index and columns
