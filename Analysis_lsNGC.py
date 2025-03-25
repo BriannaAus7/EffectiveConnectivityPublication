@@ -3,7 +3,7 @@
 # This code includes parts of the large scale nonlinear granger causality function described in Wismuller et al (2021), which the full link to the repository can be found here.
 # Headings have been provided within the code for clear instruction and details of what each code section does.
 # The outputs are an affinity matrix and an f-statistic for each subject, across the timeseries, and this will be saved in your chosen directory.
-
+# Important to note that the lsNGC function, specifically the multivariate split describes a train/validation. This is just the train and tets.
 
 # 1. Importing libraries and preparing the input data (CSV files) to be compatabile for LsNGC analysis.
 import os
