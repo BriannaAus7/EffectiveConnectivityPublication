@@ -5,7 +5,7 @@
 # The outputs are an affinity matrix and an f-statistic for each subject, across the timeseries, and this will be saved in your chosen directory.
 # Important to note that the affinity matricies are not to be symmertised after lsNGC is computed, this will remove the directional information pivotal to EC.
 
-# 1. Importing libraries and preparing the input data (CSV files) to be compatabile for LsNGC analysis.
+# 1. Importing libraries and preparing the input data (CSV files) to be compatabile for LsNGC analysis downstream.
 import os
 import numpy as np
 import pandas as pd
