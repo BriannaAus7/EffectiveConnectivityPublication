@@ -1,4 +1,4 @@
-% This script is for the dominant network of influence analysis. 
+% This script is for the dominant network of influence analysis!
 % The dominant network of influence as a measure of hierarchal control was based on the highest connectivity counts from the edge patterns. 
 % The highest connectivity count indicates a networks large influence across other networks. 
 % To determine the dominant network, the frequency of each network’s appearance was counted across all edge patterns, excluding self-connections (e.g., controlcontrol). 
