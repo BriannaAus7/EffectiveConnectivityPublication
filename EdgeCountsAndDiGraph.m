@@ -3,7 +3,6 @@
 % The highest connectivity count indicates a networks large influence across other networks. 
 % To determine the dominant network, the frequency of each network-s appearance was counted across all edge patterns, excluding self-connections (e.g., control-->control). 
 % Connections were split into HC>MD and MD>HC based on z-statistic direction.
-% See bottom of the script as to why z-stat was chosen (MSc students). 
 % The outputs for this script are 1) Directed graphs for both HC>MD and MD>HC. 2) Tables for the edge connections
 
 % 1. Load BigResTbl and filter significant connections
