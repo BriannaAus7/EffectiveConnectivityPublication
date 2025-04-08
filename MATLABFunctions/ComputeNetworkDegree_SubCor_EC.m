@@ -1,6 +1,3 @@
-%Make notes about what the script is doing, number and comment like the lsNGC script.
-
-% This is a .m file e.g., ComputeNetworkDegree_SubCor_EC.m
 % Please download this function and others to ensure that you can run the ECPermutation.m and EdgeCountsAndDigraph.m scripts.
 
 function [WorkingTable,PropRedNetList,RedNetNames] = ComputeNetworkDegree(ResDF)
