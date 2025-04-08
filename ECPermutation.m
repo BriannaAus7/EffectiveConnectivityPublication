@@ -1,3 +1,8 @@
+% This is the permutation script that seeks to identify which edges had significantly different EC between MD vs HC participants. 
+% A minimum of 1000 permutations is run, after which a Kolmogorov-Smirnov test evaluates whether the null distribution was significantly differently from a normal distribution. 
+% If it was different, an additional 1000 permutations are run until the null distribution was not significantly different from a normal distribution. 
+% Permutation testing was chosen due to its applicability to small samples and previous use in Effective Connectivity studies as described in Goulden et al., 2010; https://www.sciencedirect.com/science/article/pii/S1053811909012452?via%3Dihub
+
 clear all
 addpath('/Users/briannaaustin/Desktop/lsngc(2)/EC_Brianna(2)/MIDData/HC_MID')
 outputpath='/Users/briannaaustin/Desktop/lsngc(2)/EC_Brianna(2)/MIDData';
