@@ -1,4 +1,4 @@
-%Make notes about what the script is doing, number and comment like the lsNGC script
+
 % Make all the template networks needed - 
 %{
 RedNetNames={"Vis","SoMat","DorsAttn","Sal/VentAttn","Limb","Cntrl","DMN","TempPar","SubCor"}';
