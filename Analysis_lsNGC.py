@@ -1,9 +1,10 @@
 # This script is the first for the analysis, and is for the effective connectivity analysis.
-# Python 3.12.3.
-# This code includes parts of the large scale nonlinear granger causality function described in Wismuller et al (2021), which the full link to the repository can be found here.
+# Python 3.12.3 was used.
+# This code includes parts of the large scale nonlinear granger causality function described in Wismuller et al (2021), which the full link to the repository can be found in the READme.md but also in the next line::
+# Wismuller et al (2021): https://www.nature.com/articles/s41598-021-87316-6.
 # Headings have been provided within the code for clear instruction and details of what each code section does.
 # The outputs are an affinity matrix and an f-statistic for each subject, across the timeseries, and this will be saved in your chosen directory.
-# Important to note that the affinity matricies are not to be symmertised after lsNGC is computed, this will remove the directional information pivotal to EC.
+# Important to note that the affinity matricies are not to be symmertised after lsNGC unlike what is described in Wismuller et al (2021) as doing so would remove the directional information cardinal to EC.
 
 # 1. Importing libraries and preparing the input data (CSV files) to be compatabile for LsNGC analysis downstream.
 import os
@@ -16,10 +17,10 @@ def process_csv(file_path):
     df = pd.read_csv(file_path)
     print(f"Loaded {file_path}")
 
-    # Transposing the dataframes.
+    # Transposing the dataframes as for my analysis, they did not have the correct orientation. If you dataframes are already in the correct format, then you can comment this section and any references to transposing out.
     df_transposed = df.T
 
-    # 2. Save the transposed DataFrame to a new CSV file, appending 'T' to the filename just to make identifying clearer, as you will have multiple CSVs in the directory.
+    # 2. Save the transposed DataFrame as a new CSV file, appending 'T' to the filename just to make identifying clearer, as you will have multiple CSVs in the directory.
     new_file_path = file_path.replace('.csv', 'T.csv')
     df_transposed.to_csv(new_file_path)
     print(f"Saved transposed CSV to {new_file_path}")
@@ -193,7 +194,7 @@ for subject, data in subjects_data.items():
         }
 
 
-# 9. This is for the results dictionary and subjects_data with brain_regions
+# 9. This is for the results dictionary and subjects_data with brain_regions, again in your chosen directory.
 base_directory = '/Users/briannaaustin/Desktop/lsngc/EC_Brianna(3)/MIDData/HC_MID'
 if not os.path.exists(base_directory):
     os.makedirs(base_directory)  # Double check that the directory exists.
@@ -207,15 +208,17 @@ for subject, result in results.items():
     aff_df = pd.DataFrame(result['Aff'], index=brain_regions, columns=brain_regions)
     f_stat_df = pd.DataFrame(result['f_stat'], index=brain_regions, columns=brain_regions)
 
-# 12. Create file paths for both the affinity matricies and f-statistic using the base directory.
+# 12. Create file paths for both the affinity matricies and f-statistic using your base directory.
     aff_file_path = f'{base_directory}/{subject}_Aff.csv'
     f_stat_file_path = f'{base_directory}/{subject}_F_stat.csv'
 
-# 13. Save the affinity matricies and f-statistic as CSV files.
+# 13. Save the affinity matricies and f-statistic as CSV files to the paths.
     aff_df.to_csv(aff_file_path)
     f_stat_df.to_csv(f_stat_file_path)
 
-# 14. A print statement as a Sanity check to ensure the CSV files have been saved in the correct place.
+# 14. A print statement acting as a sanity check to ensure the CSV files have been saved in the correct place.
     print(f"Saved Aff matrix to {aff_file_path}")
     print(f"Saved F-stat matrix to {f_stat_file_path}")
+
+# Now, the next step is to run the ECPermutation.m script to identify which edges had significantly different EC between MD vs HC participants. 
 
