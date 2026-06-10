@@ -39,8 +39,7 @@ Timeseries of task activity were extracted from each brain region from the Schae
 2. Ensure all the CSVs used for effective connectivity analysis are in the correct directory.
 3. Run the Analysis_LsNGC.py script.
 4. Save the outputted affinity matricies and f-statistics to your chosen directory.
-5. Run the ECPermutation.m script.
-6. Run the EdgeCountsAndDigraph.m script.
+5. Run the LMEM.m script.
    * Evaluate the dominant network of influence.
    * Visualise the edge counts across each network for both conditions, HC>MD and MD>HC.
 8. Run the DimensionalityReduction&Clustering.py script.
